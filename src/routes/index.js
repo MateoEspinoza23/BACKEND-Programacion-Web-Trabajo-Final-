@@ -1,10 +1,13 @@
 import { Router } from "express";
-import homeRouter from "./HomeRoutes.js"
+import homeRouter from "./HomeRoutes.js";
+import eventoRouter from "./EventoRoutes.js";
+import reservaRouter from "./ReservaRoutes.js";
 
 const mainRouter = Router();
 
-//RUTAS REGISTRADAS
+// RUTAS REGISTRADAS
 mainRouter.use("/home", homeRouter);
-//RUTAS REGISTRADAS
+mainRouter.use("/eventos", eventoRouter);
+mainRouter.use("/reservas", reservaRouter);
 
-export default mainRouter
+export default mainRouter;
