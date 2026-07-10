@@ -2,7 +2,7 @@ import db from "../db/models/index.cjs";
 
 const { Evento } = db;
 
-// Obtener todos los eventos
+// PARA TODOS LOS EVENTOS
 export const getEventos = async (req, res) => {
   try {
     const eventos = await Evento.findAll();
@@ -22,7 +22,7 @@ export const getEventos = async (req, res) => {
   }
 };
 
-// Obtener un evento por ID
+// OBTENER EVENTO POR ID:
 export const getEventoById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -49,7 +49,7 @@ export const getEventoById = async (req, res) => {
   }
 };
 
-// Crear un nuevo evento
+// NUEVO EVENT
 export const createEvento = async (req, res) => {
   try {
     const {
@@ -83,6 +83,66 @@ export const createEvento = async (req, res) => {
     res.status(500).json({
       status: "error",
       message: "Error al crear el evento",
+      error: error.message,
+    });
+  }
+};
+
+//ACTUALIZAR  
+export const updateEvento = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const evento = await Evento.findByPk(id);
+
+    if (!evento) {
+      return res.status(404).json({
+        status: "error",
+        message: "Evento no encontrado",
+      });
+    }
+
+    await evento.update(req.body);
+
+    res.status(200).json({
+      status: "success",
+      message: "Evento actualizado correctamente",
+      data: evento,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      status: "error",
+      message: "Error al actualizar el evento",
+      error: error.message,
+    });
+  }
+};
+//ELIMINAR 
+export const deleteEvento = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const evento = await Evento.findByPk(id);
+
+    if (!evento) {
+      return res.status(404).json({
+        status: "error",
+        message: "Evento no encontrado",
+      });
+    }
+
+    await evento.destroy();
+
+    res.status(200).json({
+      status: "success",
+      message: "Evento eliminado correctamente",
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      status: "error",
+      message: "Error al eliminar el evento",
       error: error.message,
     });
   }
