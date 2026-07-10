@@ -1,10 +1,11 @@
 import { Router } from "express";
-import homeRouter from "./HomeRoutes.js"
+import homeRouter from "./HomeRoutes.js";
+import eventoRouter from "./EventoRoutes.js";
 
 const mainRouter = Router();
 
-//RUTAS REGISTRADAS
+// RUTAS REGISTRADAS
 mainRouter.use("/home", homeRouter);
-//RUTAS REGISTRADAS
+mainRouter.use("/eventos", eventoRouter);
 
-export default mainRouter
+export default mainRouter;
