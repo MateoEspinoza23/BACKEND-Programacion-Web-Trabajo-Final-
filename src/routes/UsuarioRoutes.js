@@ -5,7 +5,8 @@ import {
     getUsuarioById,
     createUsuario,
     updateUsuario,
-    deleteUsuario
+    deleteUsuario,
+    loginUsuario
 } from "../controllers/UsuarioController.js";
 
 const router = Router();
@@ -15,6 +16,9 @@ router.get("/", getUsuarios);
 router.get("/:id", getUsuarioById);
 
 router.post("/", createUsuario);
+
+// LOGIN
+router.post("/login", loginUsuario);
 
 router.put("/:id", updateUsuario);
 

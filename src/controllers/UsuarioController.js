@@ -2,16 +2,23 @@ import db from "../db/models/index.cjs";
 
 const { Usuario } = db;
 
+// ======================================================
 // OBTENER TODOS LOS USUARIOS
+// ======================================================
+
 export const getUsuarios = async (req, res) => {
+
   try {
+
     const usuarios = await Usuario.findAll();
 
     res.status(200).json({
       status: "success",
       data: usuarios,
     });
+
   } catch (error) {
+
     console.error(error);
 
     res.status(500).json({
@@ -19,21 +26,30 @@ export const getUsuarios = async (req, res) => {
       message: "Error al obtener los usuarios",
       error: error.message,
     });
+
   }
+
 };
 
+// ======================================================
 // OBTENER USUARIO POR ID
+// ======================================================
+
 export const getUsuarioById = async (req, res) => {
+
   try {
+
     const { id } = req.params;
 
     const usuario = await Usuario.findByPk(id);
 
     if (!usuario) {
+
       return res.status(404).json({
         status: "error",
         message: "Usuario no encontrado",
       });
+
     }
 
     res.status(200).json({
@@ -50,9 +66,84 @@ export const getUsuarioById = async (req, res) => {
     });
 
   }
+
 };
 
+// ======================================================
+// LOGIN
+// ======================================================
+
+export const loginUsuario = async (req, res) => {
+
+  try {
+
+    const { correo, contraseña } = req.body;
+
+    if (!correo || !contraseña) {
+
+      return res.status(400).json({
+        status: "error",
+        message: "Correo y contraseña son obligatorios",
+      });
+
+    }
+
+    const usuario = await Usuario.findOne({
+
+      where: {
+        correo,
+      },
+
+    });
+
+    if (!usuario) {
+
+      return res.status(404).json({
+        status: "error",
+        message: "El correo no está registrado",
+      });
+
+    }
+
+    if (usuario.contraseña !== contraseña) {
+
+      return res.status(401).json({
+        status: "error",
+        message: "Contraseña incorrecta",
+      });
+
+    }
+
+    res.status(200).json({
+
+      status: "success",
+
+      message: "Inicio de sesión correcto",
+
+      data: usuario,
+
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+
+      status: "error",
+
+      message: "Error al iniciar sesión",
+
+      error: error.message,
+
+    });
+
+  }
+
+};
+
+// ======================================================
 // CREAR USUARIO
+// ======================================================
+
 export const createUsuario = async (req, res) => {
 
   try {
@@ -101,7 +192,10 @@ export const createUsuario = async (req, res) => {
 
 };
 
+// ======================================================
 // ACTUALIZAR USUARIO
+// ======================================================
+
 export const updateUsuario = async (req, res) => {
 
   try {
@@ -139,7 +233,10 @@ export const updateUsuario = async (req, res) => {
 
 };
 
+// ======================================================
 // ELIMINAR USUARIO
+// ======================================================
+
 export const deleteUsuario = async (req, res) => {
 
   try {
